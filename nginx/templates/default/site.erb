@@ -2,6 +2,9 @@ server {
   listen   80;
   server_name  <%= @application[:domains].join(" ") %> <%= node[:hostname] %>;
   access_log  <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>.access.log;
+  <% if @application[:force_ssl] %>
+  return 301 https://$host$request_uri;
+  <% end %>
 
   location / {
     root   <%= @application[:absolute_document_root] %>;
